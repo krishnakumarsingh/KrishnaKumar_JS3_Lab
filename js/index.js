@@ -56,7 +56,7 @@ CityWeather.prototype.cityWeatherApiCall = function (apiPath, payload) {
     return new Promise((resolve, reject) => {
         fetch(`${apiPath}${payload}`)
             .then(response => {
-                if(response.status === 200) {
+                if (response.status === 200) {
                     resolve(response.json());
                 } else {
                     reject();
@@ -74,6 +74,7 @@ CityWeather.prototype.showCityWeather = function () {
     const currentDegreeName = document.getElementById("currentDegreeName");
     const currentWeatherName = document.getElementById("currentWeatherName");
     const todayDegreeName = document.getElementById("todayDegreeName");
+    const loading = document.getElementById("loading");
 
     const apiPath = `https://api.open-meteo.com/v1/forecast`;
     const date = new Date();
@@ -83,7 +84,7 @@ CityWeather.prototype.showCityWeather = function () {
     const dateEndDate = `${dateDateFormate[2]}-${dateDateFormate[1]}-${dateDateFormate[0]}`;
     const searchPrams = `?latitude=${this.lan}&longitude=${this.long}&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset&current_weather=true&timezone=Asia%2FBangkok&start_date=${dateStartDate}&end_date=${dateEndDate}`;
     const cityWeatherData = this.cityWeatherApiCall(apiPath, searchPrams);
-    
+
     this.date = this.cityWeatherDays();
     cityWeatherData.then(res => {
         dateName.innerHTML = this.date;
@@ -92,6 +93,7 @@ CityWeather.prototype.showCityWeather = function () {
         currentWeatherName.innerHTML = this.showWeather(res?.current_weather?.weathercode);
         cityName.innerHTML = this.cityName;
         currentDegreeName.innerHTML = `${res?.current_weather.temperature}${res?.daily_units?.temperature_2m_max}`;
+        loading.style.display = "none";
     });
 };
 
@@ -132,18 +134,18 @@ CityWeather.prototype.loadCityList = function (searchText) {
     }
 };
 
-CityWeather.prototype.cityWeatherDays = function() {
+CityWeather.prototype.cityWeatherDays = function () {
     let day;
-    const days =["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     return `${days[new Date().getDay()]} ${new Date().getDate()} ${month[new Date().getMonth()]} ${new Date().getFullYear()}`;
 }
 
 CityWeather.prototype.showWeather = function (eventType) {
     let weatherType = "";
     const weatherInformation = document.getElementById("weatherInformation");
-    let weathercode = [{"0": "Clear Sky", "1": "Mainly Clear", "2": "Partly Cloudy", "3": "Overcast", "45": "Fog", "48": "Depositing Rime Fog", "51": "Drizzle: Light", "53": "Drizzle: Moderate", "55": "Drizzle: Dense Intensity", "56": "Freezing Drizzle: Light", "57": "Freezing Drizzle: Dense Intensity", "61": "Rain: Slight", "63": "Rain: Moderate", "65": "Rain: Heavy Intensity", "66": "Freezing Rain: Light", "67": "Freezing Rain: heavy intensity", "71": "Snow fall: Slight", "73": "Snow fall: moderate", "75": "Snow fall: heavy intensity", "77": "Snow grains", "80": "Rain showers: Slight", "81": "Rain showers: moderate", "82": "Rain showers: violent", "85": "Snow showers slight", "86": "Snow showers heavy", "95": "Thunderstorm: Slight or moderate", "96": "Thunderstorm with slight", "99": "Thunderstorm with heavy hail"}];
-    weatherType = weathercode[0][eventType];
+    let weathercode = { "0": "Clear Sky", "1": "Mainly Clear", "2": "Partly Cloudy", "3": "Overcast", "45": "Fog", "48": "Depositing Rime Fog", "51": "Drizzle: Light", "53": "Drizzle: Moderate", "55": "Drizzle: Dense Intensity", "56": "Freezing Drizzle: Light", "57": "Freezing Drizzle: Dense Intensity", "61": "Rain: Slight", "63": "Rain: Moderate", "65": "Rain: Heavy Intensity", "66": "Freezing Rain: Light", "67": "Freezing Rain: heavy intensity", "71": "Snow fall: Slight", "73": "Snow fall: moderate", "75": "Snow fall: heavy intensity", "77": "Snow grains", "80": "Rain showers: Slight", "81": "Rain showers: moderate", "82": "Rain showers: violent", "85": "Snow showers slight", "86": "Snow showers heavy", "95": "Thunderstorm: Slight or moderate", "96": "Thunderstorm with slight", "99": "Thunderstorm with heavy hail" };
+    weatherType = weathercode[eventType];
     weatherInformation.classList = `weather-information ${this.weatherTypeJoin(weatherType)}`;
     weatherInformation.style.backgroundImage = `url("../assets/img/${this.weatherTypeJoin(weatherType)}.jpg"), url("../assets/img/bg.jpg")`;
     weatherInformation.style.backgroundPosition = "100%";
