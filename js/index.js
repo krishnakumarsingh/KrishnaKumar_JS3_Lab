@@ -111,7 +111,7 @@ CityWeather.prototype.loadCityList = function (searchText) {
                 list += `<li
                     class="cityList"
                     onclick="cityWeather.searchCitySelect(event)"
-                    data-name="${element.name ? element.name + "," : ""} ${element.admin1 ? element.admin1 + ',' : ""} ${element.country ? element.country + "" : ""}"
+                    data-name="${element.name ? element.name + "," : ""} ${element.country ? element.country + "" : ""}"
                     data-lan=${element.latitude}
                     data-long=${element.longitude}
                 >
