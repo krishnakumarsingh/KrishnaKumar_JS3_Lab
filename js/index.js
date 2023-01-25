@@ -149,6 +149,7 @@ CityWeather.prototype.showWeather = function (eventType) {
     weatherInformation.classList = `weather-information ${this.weatherTypeJoin(weatherType)}`;
     weatherInformation.style.backgroundImage = `url("../assets/img/${this.weatherTypeJoin(weatherType)}.jpg"), url("../assets/img/bg.jpg")`;
     weatherInformation.style.backgroundPosition = "100%";
+    weatherInformation.children[0].classList = "weather-information-container";
     return weatherType;
 };
 
@@ -159,8 +160,10 @@ CityWeather.prototype.weatherTypeJoin = function (text) {
 CityWeather.prototype.searchCitySelect = function (event) {
     event.preventDefault();
 
+    const loading = document.getElementById("loading");
     const searchCityField = document.getElementById("searchCityField");
     const searchResults = document.getElementById("searchResults");
+    loading.style.display = "flex";
     searchResults.style.display = "none";
     searchCityField.value = event?.currentTarget?.dataset?.name?.trim();
     this.cityName = event?.currentTarget?.dataset?.name?.trim();
